@@ -21,6 +21,7 @@ export default function Grupo() {
 
   const placeholder = "https://cdn-icons-png.flaticon.com/512/2965/2965879.png";
 
+  // restaura grupo salvo se veio vazio
   useEffect(() => {
     if (!state) {
       const saved = localStorage.getItem(STORAGE_KEY);
@@ -28,6 +29,28 @@ export default function Grupo() {
     }
   }, [state]);
 
+  // 👉 CARREGA O GRUPO DA API PARA PEGAR O NOME DO CRIADOR
+  useEffect(() => {
+    async function loadGrupo() {
+      if (!grupo?.id_grupo) return;
+
+      try {
+        const resp = await fetch(`${API_URL}/group/${grupo.id_grupo}`);
+        const data = await resp.json();
+
+        if (data.status && data.grupo) {
+          setGrupo(data.grupo);
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(data.grupo));
+        }
+      } catch (e) {
+        console.log("Erro loadGrupo:", e);
+      }
+    }
+
+    loadGrupo();
+  }, [grupo?.id_grupo]);
+
+  // verifica status do usuario com o grupo
   useEffect(() => {
     async function loadStatus() {
       if (!grupo?.id_grupo || !user?.id_usuario) return;

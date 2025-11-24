@@ -1,0 +1,38 @@
+/* Estilos da Sidebar com suporte a tema */
+.sidebar-container {
+  --sidebar-bg: #2c1e92;
+  --menu-bg: linear-gradient(180deg, #3b2cb0 0%, #2c1e92 100%);
+  --menu-item-hover: rgba(255, 255, 255, 0.1);
+  --toggle-bg: #5c46b5;
+  --toggle-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Tema escuro */
+[data-theme="dark"] .sidebar-container {
+  --sidebar-bg: #151719;
+  --menu-bg: linear-gradient(180deg, #1b1d20 0%, #151719 100%);
+  --menu-item-hover: rgba(255, 255, 255, 0.05);
+  --toggle-bg: #3f3f46;
+  --toggle-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+/* Aplicando as variáveis nos componentes */
+.SidebarContainer {
+  background-color: var(--sidebar-bg) !important;
+  transition: background-color 0.3s ease;
+}
+
+.Menu {
+  background: var(--menu-bg) !important;
+  transition: background 0.3s ease;
+}
+
+.MenuItem:hover {
+  background: var(--menu-item-hover) !important;
+}
+
+.SidebarToggle {
+  background: var(--toggle-bg) !important;
+  box-shadow: var(--toggle-shadow) !important;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}

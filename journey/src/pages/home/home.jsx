@@ -260,8 +260,9 @@ export default function Home() {
                             "Explore conteúdo, eventos e conversas deste grupo."}
                         </div>
                         <div className="group-meta">
-                          Criado por <span>{g.criador || g.nome_criador}</span>
-                        </div>
+  Criado por <span>{g.nome_criador || "Desconhecido"}</span>
+</div>
+
                       </div>
                     </div>
                   ))}

@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTheme } from "../../context/ThemeContext";
 import logo from "../../assets/logo.png";
+import "./sidebarStyles.css";
 
 import {
   SidebarContainer,
@@ -27,9 +29,14 @@ import {
 
 const Sidebar = ({ isCollapsed, setCollapsed, onItemClick }) => {
   const navigate = useNavigate();
+  const { theme } = useTheme();
 
   return (
-    <SidebarContainer isCollapsed={isCollapsed}>
+    <SidebarContainer 
+      className="sidebar-container"
+      isCollapsed={isCollapsed}
+      data-theme={theme}
+    >
       <UserAvatar>
         <img src={logo} alt="Logo" />
       </UserAvatar>

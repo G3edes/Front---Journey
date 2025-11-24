@@ -1,6 +1,32 @@
 // components/header/style.js
-
 import styled from "styled-components";
+
+// 0. UserAvatar Component
+export const UserAvatar = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+  padding: 0 10px;
+  transition: all 0.3s ease;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    max-width: 120px;
+    height: auto;
+    object-fit: contain;
+  }
+
+  ${({ isCollapsed }) =>
+    isCollapsed &&
+    `
+    img {
+      max-width: 40px;
+    }
+  `}
+`;
 
 // 1. SidebarToggle (Posicionado no fundo e com largura ajustada)
 export const SidebarToggle = styled.button`
@@ -9,28 +35,25 @@ export const SidebarToggle = styled.button`
   left: 50%;
 
   @media (max-width: 768px) {
-    display: none; /* Esconde o toggle em telas pequenas */
+    display: none;
   }
   transform: translateX(-50%);
-
-  /* Light mode (como antes) */
   background: #5c46b5;
   color: white;
   border: none;
   border-radius: 8px;
   width: 50px;
   height: 20px;
-
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  transition: background 0.2s ease, width 0.3s ease;
+  transition: all 0.3s ease;
   font-size: 16px;
   z-index: 1001;
 
-  .homepage.dark & {
+  [data-theme="dark"] & {
     background: #3f3f46;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
   }
@@ -51,7 +74,7 @@ export const SidebarContainer = styled.aside`
   left: 0;
   box-sizing: border-box;
   flex-shrink: 0;
-  transition: transform 0.3s ease, width 0.3s ease;
+  transition: all 0.3s ease;
   z-index: 1000;
 
   @media (max-width: 768px) {
@@ -66,11 +89,10 @@ export const SidebarContainer = styled.aside`
     }
   }
 
-  .homepage.dark & {
+  [data-theme="dark"] & {
     background-color: #151719;
   }
 
-  /* Garante que o avatar desapareça suavemente quando colapsado */
   ${({ isCollapsed }) =>
     isCollapsed &&
     `
@@ -82,33 +104,19 @@ export const SidebarContainer = styled.aside`
   `}
 `;
 
-export const UserAvatar = styled.div`
-  width: 80px;
-  height: 80px;
-  overflow: hidden;
-  margin-bottom: 20px;
-  flex-shrink: 0;
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-`;
+// ... (restante do código permanece o mesmo)
 
 // 3. Menu (Com flex-grow para empurrar o toggle)
 export const Menu = styled.div`
-  /* Light mode (como antes) */
   background: linear-gradient(180deg, #3b2cb0 0%, #2c1e92 100%);
   width: 100%;
   border-radius: 12px;
   padding: 14px;
-  flex-grow: 1; /* Ocupa o espaço restante */
-  margin-bottom: auto; /* Garante que o espaço seja ocupado até o topo do toggle */
+  flex-grow: 1;
+  margin-bottom: auto;
+  transition: all 0.3s ease;
 
-  .homepage.dark & {
-    /* Dark neutro (mantém o cinza) */
+  [data-theme="dark"] & {
     background: linear-gradient(180deg, #1b1d20 0%, #151719 100%);
   }
 
@@ -118,7 +126,6 @@ export const Menu = styled.div`
     padding: 10px 0;
   `}
 `;
-
 export const MenuItem = styled.div`
   display: flex;
   justify-content: ${({ isCollapsed }) =>
