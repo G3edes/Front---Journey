@@ -152,7 +152,16 @@ export default function Home() {
                 year === today.getFullYear()
                   ? "today"
                   : ""
-              } ${activeDay === day ? "active" : ""}`}
+              } ${activeDay === day ? "active" : ""} ${
+                eventos.some((ev) => {
+                  const d = new Date(ev.data_evento);
+                  return (
+                    d.getDate() === day &&
+                    d.getMonth() === month &&
+                    d.getFullYear() === year
+                  );
+                }) ? "has-event" : ""
+              }`}
               onClick={() => setActiveDay(day)}
             >
               {day}
@@ -180,9 +189,10 @@ export default function Home() {
                 <FaCircle size={8} /> {ev.nome_evento}
               </div>
               <div className="event-time">
-                {new Date(ev.data_evento).toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
+                {new Date(ev.data_evento).toLocaleTimeString('pt-BR', {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  hour12: false
                 })}
               </div>
             </div>
@@ -197,83 +207,99 @@ export default function Home() {
   // ===============================
   // JSX PRINCIPAL
   // ===============================
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.body.classList.add('dark-theme');
+      document.documentElement.style.backgroundColor = '#0f1114';
+    } else {
+      document.body.classList.remove('dark-theme');
+      document.documentElement.style.backgroundColor = '#f5f7fb';
+    }
+    
+    return () => {
+      document.body.classList.remove('dark-theme');
+      document.documentElement.style.backgroundColor = '';
+    };
+  }, [theme]);
+
   return (
-    <DashboardLayout showRight rightContent={calendarioFuncional}>
-      <header className="page-header">
-        <h1 className="home-title">Bem-vindo!</h1>
-        <div className="header-right">
-          <button className="profile-avatar-circle" onClick={goToProfile}>
-            {userImage ? (
-              <img
-                src={userImage}
-                alt="Perfil"
-                className="profile-avatar-img"
-              />
-            ) : (
-              <FaUserCircle size={26} />
-            )}
-          </button>
-          <button className="theme-btn" onClick={toggleDarkMode}>
-            {theme === "dark" ? <FaSun /> : <FaMoon />}
-          </button>
-        </div>
-      </header>
-
-      <div className="content-two-col">
-        <section className="left-col">
-          <div className="filters-bar">
-            <div className="filter-chip">Área ▾</div>
-          </div>
-
-          <section className="page-card">
-            <div className="big-card-top">
-              <h2>Explorar Grupos</h2>
-              <div className="big-card-actions">
-                <button className="btn btn-primary" onClick={handleCreateGroup}>
-                  <FaPlus /> Criar Grupo
-                </button>
-              </div>
-            </div>
-
-            <div className="big-card-body">
-              {grupos.length > 0 ? (
-                <div className="groups-grid modern">
-                  {grupos.map((g, idx) => (
-                    <div
-                      key={g.id_grupo}
-                      className={`group-card modern variant-${(idx % 3) + 1}`}
-                      onClick={() => navigate("/grupo", { state: g })}
-                    >
-                      <div className="illustration">
-                        <img
-                          src={
-                            g.imagem ||
-                            "https://cdn-icons-png.flaticon.com/512/2965/2965879.png"
-                          }
-                          alt={g.nome}
-                        />
-                      </div>
-                      <div className="group-info">
-                        <div className="group-title">{g.nome}</div>
-                        <div className="group-desc">
-                          {g.descricao ||
-                            "Explore conteúdo, eventos e conversas deste grupo."}
-                        </div>
-                        <div className="group-meta">
-  Criado por <span>{g.nome_criador || "Desconhecido"}</span>
-</div>
-
-                      </div>
-                    </div>
-                  ))}
-                </div>
+    <div className={`homepage ${theme === 'dark' ? 'dark' : ''}`}>
+      <DashboardLayout showRight rightContent={calendarioFuncional}>
+        <header className="page-header">
+          <h1 className="home-title">Bem-vindo!</h1>
+          <div className="header-right">
+            <button className="profile-avatar-circle" onClick={goToProfile}>
+              {userImage ? (
+                <img
+                  src={userImage}
+                  alt="Perfil"
+                  className="profile-avatar-img"
+                />
               ) : (
-                <div className="state-msg">Nenhum grupo encontrado.</div>
+                <FaUserCircle size={26} />
               )}
+            </button>
+            <button className="theme-btn" onClick={toggleDarkMode}>
+              {theme === "dark" ? <FaSun /> : <FaMoon />}
+            </button>
+          </div>
+        </header>
+
+        <div className="content-two-col">
+          <section className="left-col">
+            <div className="filters-bar">
+              <div className="filter-chip">Área ▾</div>
             </div>
+
+            <section className="page-card">
+              <div className="big-card-top">
+                <h2>Explorar Grupos</h2>
+                <div className="big-card-actions">
+                  <button className="btn btn-primary" onClick={handleCreateGroup}>
+                    <FaPlus /> Criar Grupo
+                  </button>
+                </div>
+              </div>
+
+              <div className="big-card-body">
+                {grupos.length > 0 ? (
+                  <div className="groups-grid modern">
+                    {grupos.map((g, idx) => (
+                      <div
+                        key={g.id_grupo}
+                        className={`group-card modern variant-${(idx % 3) + 1}`}
+                        onClick={() => navigate("/grupo", { state: g })}
+                      >
+                        <div className="illustration">
+                          <img
+                            src={
+                              g.imagem ||
+                              "https://cdn-icons-png.flaticon.com/512/2965/2965879.png"
+                            }
+                            alt={g.nome}
+                          />
+                        </div>
+                        <div className="group-info">
+                          <div className="group-title">{g.nome}</div>
+                          <div className="group-desc">
+                            {g.descricao ||
+                              "Explore conteúdo, eventos e conversas deste grupo."}
+                          </div>
+                          <div className="group-meta">
+                            Criado por <span>{g.criador || g.nome_criador}</span>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="state-msg">Nenhum grupo encontrado.</div>
+                )}
+              </div>
+            </section>
           </section>
-        </section>
-      </div>
-    </DashboardLayout>
+        </div>
+      </DashboardLayout>
+    </div>
   );
 }

@@ -1,0 +1,208 @@
+/* Tema Claro (padrão) */
+:root {
+  /* Cores de fundo */
+  --cal-bg-body: #f5f7fb;
+  --cal-bg-card: #ffffff;
+  --cal-bg-hover: rgba(0, 0, 0, 0.02);
+  --cal-bg-active: rgba(0, 0, 0, 0.05);
+  
+  /* Cores de texto */
+  --cal-text-base: #141827;
+  --cal-text-muted: #6b7280;
+  --cal-text-light: #9ca3af;
+  
+  /* Cores de borda */
+  --cal-border: rgba(20, 24, 39, 0.1);
+  --cal-border-hover: rgba(20, 24, 39, 0.2);
+  
+  /* Cores de destaque */
+  --cal-primary: #6c4ae2;
+  --cal-primary-light: #a78bfa;
+  --cal-danger: #ef4444;
+  --cal-danger-light: #f87171;
+  
+  /* Sombras */
+  --cal-shadow-subtle: 0 10px 30px rgba(17, 17, 26, 0.06);
+  --cal-shadow-hover: 0 15px 30px rgba(0, 0, 0, 0.1);
+  
+  /* Cores de fundo de elementos */
+  --cal-bg-today: rgba(108, 74, 226, 0.1);
+  --cal-bg-active-day: rgba(108, 74, 226, 0.2);
+  --cal-bg-button: linear-gradient(135deg, var(--cal-primary), var(--cal-primary-light));
+  --cal-bg-button-hover: linear-gradient(135deg, #5d3dc5, #9374f9);
+  --cal-bg-danger: linear-gradient(135deg, var(--cal-danger), var(--cal-danger-light));
+  --cal-bg-danger-hover: linear-gradient(135deg, #dc2626, #f87171);
+}
+
+/* Tema Escuro */
+.dark {
+  /* Cores de fundo */
+  --cal-bg-body: #0f1114;
+  --cal-bg-card: #1a1d24;
+  --cal-bg-hover: rgba(255, 255, 255, 0.03);
+  --cal-bg-active: rgba(255, 255, 255, 0.08);
+  
+  /* Cores de texto */
+  --cal-text-base: #e5e7eb;
+  --cal-text-muted: #9ca3af;
+  --cal-text-light: #6b7280;
+  
+  /* Cores de borda */
+  --cal-border: rgba(255, 255, 255, 0.08);
+  --cal-border-hover: rgba(255, 255, 255, 0.15);
+  
+  /* Cores de destaque */
+  --cal-primary: #8b5cf6;
+  --cal-primary-light: #a78bfa;
+  --cal-danger: #ef4444;
+  --cal-danger-light: #f87171;
+  
+  /* Sombras */
+  --cal-shadow-subtle: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+  --cal-shadow-hover: 0 15px 30px rgba(0, 0, 0, 0.3);
+  
+  /* Cores de fundo de elementos */
+  --cal-bg-today: rgba(139, 92, 246, 0.2);
+  --cal-bg-active-day: rgba(139, 92, 246, 0.3);
+  --cal-bg-button: linear-gradient(135deg, var(--cal-primary), var(--cal-primary-light));
+  --cal-bg-button-hover: linear-gradient(135deg, #7c3aed, #a78bfa);
+  --cal-bg-danger: linear-gradient(135deg, var(--cal-danger), var(--cal-danger-light));
+  --cal-bg-danger-hover: linear-gradient(135deg, #dc2626, #f87171);
+}
+
+/* Aplicando as variáveis de tema */
+.calendar-page {
+  --bg-card: var(--cal-bg-card);
+  --bg-body: var(--cal-bg-body);
+  --text-base: var(--cal-text-base);
+  --text-muted: var(--cal-text-muted);
+  --border-color: var(--cal-border);
+  --primary: var(--cal-primary);
+  --primary-2: var(--cal-primary-light);
+  --shadow-subtle: var(--cal-shadow-subtle);
+  --danger: var(--cal-danger);
+  --danger-light: var(--cal-danger-light);
+  
+  /* Garantindo que o tema escuro cubra toda a página */
+  min-height: 100vh;
+  background-color: var(--cal-bg-body);
+  color: var(--cal-text-base);
+}
+
+/* Ajustando o container principal */
+.calendar-page .main-content {
+  min-height: calc(100vh - 60px); /* Ajuste conforme a altura do cabeçalho */
+  background-color: var(--cal-bg-body);
+  padding: 20px;
+}
+
+/* Ajustando o container do calendário */
+.calendar-page .main-content > div {
+  min-height: 100%;
+}
+
+/* Ajustes específicos para o modo escuro */
+.calendar-page.dark {
+  background-color: var(--cal-bg-body);
+  color: var(--cal-text-base);
+}
+
+/* Garantindo que o rodapé também siga o tema */
+.calendar-page.dark footer,
+.calendar-page.dark .footer {
+  background-color: var(--cal-bg-card);
+  color: var(--cal-text-base);
+  border-top: 1px solid var(--cal-border);
+}
+
+/* Ajustando a barra de rolagem para o tema escuro */
+.calendar-page.dark::-webkit-scrollbar {
+  width: 8px;
+}
+
+.calendar-page.dark::-webkit-scrollbar-track {
+  background: var(--cal-bg-card);
+}
+
+.calendar-page.dark::-webkit-scrollbar-thumb {
+  background-color: var(--cal-primary);
+  border-radius: 4px;
+}
+
+.calendar-page.dark::-webkit-scrollbar-thumb:hover {
+  background-color: var(--cal-primary-light);
+}
+
+.calendar-page.dark .day {
+  background: var(--cal-bg-card);
+  border-color: var(--cal-border);
+}
+
+.calendar-page.dark .day.today {
+  background: var(--cal-bg-today);
+  border-color: var(--cal-primary);
+}
+
+.calendar-page.dark .day.active {
+  background: var(--cal-bg-active-day);
+  border-color: var(--cal-primary);
+}
+
+.calendar-page.dark .event {
+  background: var(--cal-bg-card);
+  border-color: var(--cal-border);
+  color: var(--cal-text-base);
+}
+
+/* Garantindo que todos os textos dentro do calendário usem a cor correta */
+.calendar-page.dark,
+.calendar-page.dark p,
+.calendar-page.dark h1,
+.calendar-page.dark h2,
+.calendar-page.dark h3,
+.calendar-page.dark h4,
+.calendar-page.dark h5,
+.calendar-page.dark h6,
+.calendar-page.dark span,
+.calendar-page.dark div {
+  color: var(--cal-text-base);
+}
+
+/* Ajustando inputs e botões no tema escuro */
+.calendar-page.dark input,
+.calendar-page.dark button,
+.calendar-page.dark select,
+.calendar-page.dark textarea {
+  color: var(--cal-text-base);
+  background-color: var(--cal-bg-card);
+  border-color: var(--cal-border);
+}
+
+/* Ajustando o placeholder dos inputs */
+.calendar-page.dark input::placeholder {
+  color: var(--cal-text-muted);
+  opacity: 0.7;
+}
+
+.calendar-page.dark .event:hover {
+  background: var(--cal-bg-hover);
+  box-shadow: var(--cal-shadow-hover);
+}
+
+.calendar-page.dark .today-btn,
+.calendar-page.dark .add-event-btn {
+  background: var(--cal-bg-button);
+}
+
+.calendar-page.dark .today-btn:hover,
+.calendar-page.dark .add-event-btn:hover {
+  background: var(--cal-bg-button-hover);
+}
+
+.calendar-page.dark .delete {
+  background: var(--cal-bg-danger);
+}
+
+.calendar-page.dark .delete:hover {
+  background: var(--cal-bg-danger-hover);
+}

@@ -1,183 +1,163 @@
-/* -------------------------------
-   GRUPO BASE - TEMA IGUAL AO GRUPOHOME
-   Utilizando as mesmas variáveis do grupoHome.css
-------------------------------- */
-
+/* ===============================
+   LAYOUT GERAL
+================================ */
 .grupo-page {
   width: 100%;
   min-height: 100vh;
   display: flex;
-  background-color: var(--bg) !important;
-  color: var(--text) !important;
-  transition: all 0.3s ease;
+  background: var(--bg);
+  color: var(--text);
+  transition: 0.3s ease;
 }
 
-/* MAIN */
 .main-area {
   flex: 1;
   padding: 2rem;
   margin-left: 240px;
-  transition: margin-left .25s ease;
-  background: transparent !important;
+  transition: margin-left 0.25s ease;
 }
 
 .main-area.collapsed {
   margin-left: 90px;
 }
 
-/* CONTAINER */
 .grupo-home-container {
-  max-width: 1100px;
+  max-width: 1050px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 2rem;
+}
+
+/* ===============================
+   CABEÇALHO DO GRUPO
+================================ */
+.grupo-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  padding: 1.5rem 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+
+.grupo-header h1 {
+  font-size: 2rem;
+  margin: 0;
+  color: var(--text);
+  font-weight: 700;
 }
 
 /* BOTÃO VOLTAR */
-.btn-back {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 0.6rem 0.95rem;
-  background: var(--grupo-card-bg-dark);
-  border: 1px solid var(--grupo-border-dark);
-  color: var(--grupo-text-dark);
+.btn-voltar {
+  background: transparent;
+  border: 1px solid var(--border);
+  padding: 0.6rem 1rem;
   border-radius: 10px;
   cursor: pointer;
   font-weight: 600;
+  color: var(--text);
   transition: 0.25s ease;
 }
 
-.btn-back:hover {
-  background: var(--grupo-card-hover-dark);
+.btn-voltar:hover {
+  background: var(--border);
   transform: translateY(-2px);
 }
 
-/* BANNER MODELO A */
-.grupo-banner {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  padding: 1.5rem;
-  border-radius: 12px;
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-  position: relative;
+/* ===============================
+   CONTEÚDO PRINCIPAL
+================================ */
+
+.grupo-content {
+  display: grid;
+  grid-template-columns: 340px auto;
+  gap: 2rem;
 }
 
-.grupo-banner::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: var(--grupo-gradient);
-}
-
-/* AVATAR */
-.grupo-avatar {
-  width: 96px;
-  height: 96px;
-  border-radius: 12px;
-  overflow: hidden;
-  border: 2px solid var(--grupo-border-dark);
-  background: #000;
-}
-
-.grupo-avatar-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* TÍTULO */
-.grupo-header-info h1 {
-  font-size: 1.8rem;
-  font-weight: 700;
-  margin: 0;
-  background: var(--grupo-gradient);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.grupo-meta {
-  display: flex;
-  gap: .75rem;
-  color: var(--text-muted);
-  font-size: 0.95rem;
-}
-
-/* CARD */
 .page-card {
   background: var(--card-bg);
   border-radius: 12px;
-  padding: 1.7rem;
   border: 1px solid var(--border);
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  padding: 1.7rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
 }
 
-.page-card h2 {
-  color: var(--text);
-  border-bottom: 1px solid var(--border);
-  padding-bottom: .7rem;
-  margin-bottom: 1rem;
+/* ===============================
+   IMAGEM DO GRUPO (SEM DISTORÇÃO)
+================================ */
+
+.grupo-image {
+  padding: 0 !important;
+  overflow: hidden;
+  border-radius: 14px;
+  height: 340px;
   display: flex;
-  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
 }
 
-/* DESCRIÇÃO */
-.grupo-descricao {
-  color: var(--text);
-  line-height: 1.6;
+.grupo-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;   /* AQUI RESOLVE A DESPROPORÇÃO */
+  border-radius: 14px;
 }
 
-/* DETALHES */
-.grupo-detalhes {
-  margin-top: 1rem;
-}
+/* ===============================
+   INFORMAÇÕES DO GRUPO
+================================ */
 
-.detalhe-item {
+.grupo-info h3 {
+  font-size: 1.4rem;
   margin-bottom: 1rem;
 }
 
-.detalhe-label {
-  font-size: .75rem;
-  color: var(--text-muted);
-  font-weight: 600;
+.info-stats {
+  margin-top: 1.2rem;
+  font-size: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
 }
 
-/* BOTÃO */
+.action-area {
+  margin-top: 2rem;
+}
+
+/* BOTÃO PRINCIPAL */
 .btn-primary {
-  margin-top: 1.5rem;
-  background: var(--grupo-primary) !important;
+  background: var(--grupo-primary);
+  padding: 1rem 1.4rem;
   border: none;
-  padding: 1rem 1.5rem;
   border-radius: 10px;
   font-weight: 700;
   color: white;
   cursor: pointer;
+  width: 100%;
   transition: 0.25s ease;
 }
 
 .btn-primary:hover {
-  background: var(--grupo-primary-hover) !important;
+  background: var(--grupo-primary-hover);
   transform: translateY(-2px);
-}
-
-/* REMOVER ID */
-.grupo-id,
-.id-label {
-  display: none !important;
 }
 
 /* RESPONSIVO */
 @media (max-width: 900px) {
-  .grupo-banner {
+  .grupo-content {
+    grid-template-columns: 1fr;
+  }
+
+  .grupo-image {
+    height: 260px;
+  }
+
+  .grupo-header {
     flex-direction: column;
+    gap: 1rem;
     text-align: center;
   }
 }

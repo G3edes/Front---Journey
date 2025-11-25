@@ -27,6 +27,7 @@ import {
 } from "react-icons/fa";
 import { useTheme } from "../../context/ThemeContext";
 import "./calendary.js";
+import "./calendary-theme.css";
 
 const API_BASE = "http://localhost:3030/v1/journey";
 
