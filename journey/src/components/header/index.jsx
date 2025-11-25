@@ -70,18 +70,6 @@ const Sidebar = ({ isCollapsed, setCollapsed, onItemClick }) => {
           isCollapsed={isCollapsed}
           onClick={(e) => {
             e.stopPropagation();
-            navigate("/calendary");
-            onItemClick && onItemClick();
-          }}
-        >
-          <FaCalendar />
-          <span>Calendario</span>
-        </MenuItem>
-
-        <MenuItem
-          isCollapsed={isCollapsed}
-          onClick={(e) => {
-            e.stopPropagation();
             navigate("/criarGrupo");
             onItemClick && onItemClick();
           }}

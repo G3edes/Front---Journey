@@ -1,111 +1,183 @@
-/* src/pages/grupo/grupoBase.css */
-/* Base visual moderna e responsiva para Grupo, GrupoHome e Chat */
+/* -------------------------------
+   GRUPO BASE - TEMA IGUAL AO GRUPOHOME
+   Utilizando as mesmas variáveis do grupoHome.css
+------------------------------- */
 
 .grupo-page {
-  display: flex;
-  min-height: 100vh;
   width: 100%;
-  background: var(--bg-body);
-  color: var(--text-base);
-  transition: background 0.3s ease, color 0.3s ease;
-}
-
-/* Área principal */
-/* Offset do Sidebar (para páginas que usam Sidebar direto) */
-.main-area { flex: 1; padding: 24px; margin-left: 240px; transition: margin-left .25s ease; }
-.main-area.collapsed { margin-left: 90px; }
-
-.page-card {
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 16px;
-  box-shadow: var(--shadow-subtle);
-  padding: 18px;
-  transition: background 0.3s ease;
-}
-
-/* Cabeçalhos e títulos */
-.page-header {
+  min-height: 100vh;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
+  background-color: var(--bg) !important;
+  color: var(--text) !important;
+  transition: all 0.3s ease;
 }
 
-.page-header h1 {
-  font-size: 28px;
-  font-weight: 800;
-  color: var(--primary);
+/* MAIN */
+.main-area {
+  flex: 1;
+  padding: 2rem;
+  margin-left: 240px;
+  transition: margin-left .25s ease;
+  background: transparent !important;
 }
 
-/* Botões */
-.btn {
+.main-area.collapsed {
+  margin-left: 90px;
+}
+
+/* CONTAINER */
+.grupo-home-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* BOTÃO VOLTAR */
+.btn-back {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
   gap: 8px;
-  border: none;
+  padding: 0.6rem 0.95rem;
+  background: var(--grupo-card-bg-dark);
+  border: 1px solid var(--grupo-border-dark);
+  color: var(--grupo-text-dark);
   border-radius: 10px;
   cursor: pointer;
   font-weight: 600;
-  transition: all 0.25s ease;
+  transition: 0.25s ease;
 }
 
+.btn-back:hover {
+  background: var(--grupo-card-hover-dark);
+  transform: translateY(-2px);
+}
+
+/* BANNER MODELO A */
+.grupo-banner {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  position: relative;
+}
+
+.grupo-banner::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--grupo-gradient);
+}
+
+/* AVATAR */
+.grupo-avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid var(--grupo-border-dark);
+  background: #000;
+}
+
+.grupo-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* TÍTULO */
+.grupo-header-info h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
+  background: var(--grupo-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.grupo-meta {
+  display: flex;
+  gap: .75rem;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+/* CARD */
+.page-card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 1.7rem;
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+.page-card h2 {
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: .7rem;
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* DESCRIÇÃO */
+.grupo-descricao {
+  color: var(--text);
+  line-height: 1.6;
+}
+
+/* DETALHES */
+.grupo-detalhes {
+  margin-top: 1rem;
+}
+
+.detalhe-item {
+  margin-bottom: 1rem;
+}
+
+.detalhe-label {
+  font-size: .75rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+/* BOTÃO */
 .btn-primary {
-  background: linear-gradient(90deg, var(--primary), var(--primary-2));
-  color: #fff;
-  padding: 12px 20px;
-  box-shadow: 0 6px 20px rgba(107, 70, 193, 0.25);
+  margin-top: 1.5rem;
+  background: var(--grupo-primary) !important;
+  border: none;
+  padding: 1rem 1.5rem;
+  border-radius: 10px;
+  font-weight: 700;
+  color: white;
+  cursor: pointer;
+  transition: 0.25s ease;
 }
 
 .btn-primary:hover {
+  background: var(--grupo-primary-hover) !important;
   transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(107, 70, 193, 0.4);
 }
 
-.btn-voltar {
-  background: var(--card-bg);
-  color: var(--text-base);
-  border: 1px solid var(--border-color);
-  padding: 10px 14px;
-  border-radius: 10px;
-  margin-bottom: 20px;
+/* REMOVER ID */
+.grupo-id,
+.id-label {
+  display: none !important;
 }
 
-.btn-voltar:hover {
-  background: rgba(107, 70, 193, 0.08);
-}
-
-/* Responsivo */
-@media (max-width: 768px) {
-  .main-area { margin-left: 0 !important; padding: 16px; }
-
-  .page-card { padding: 14px; }
-
-  .page-header {
+/* RESPONSIVO */
+@media (max-width: 900px) {
+  .grupo-banner {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
+    text-align: center;
   }
 }
-
-/* ==========================
-   Listas compartilhadas (Participantes, etc.)
-   ========================== */
-.lista-participantes { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
-.participante-item {
-  display: flex; align-items: center; gap: 12px;
-  padding: 10px 12px; border: 1px solid var(--border-color);
-  border-radius: 12px; background: var(--bg-card);
-}
-.participante-item .foto-perfil { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
-.participante-item .info { flex: 1; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.participante-item .info .nome { font-weight: 700; }
-.participante-item .tag-criador { font-size: 12px; padding: 4px 8px; border-radius: 999px; background: rgba(107,114,128,0.18); color: var(--text-base); border: 1px solid var(--border-color); }
-.participante-item .btn { margin-left: auto; }
-
-@media (max-width: 600px) {
-  .participante-item { padding: 8px 10px; }
-  .participante-item .foto-perfil { width: 36px; height: 36px; }
-}
-

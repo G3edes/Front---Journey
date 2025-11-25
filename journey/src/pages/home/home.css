@@ -98,7 +98,7 @@ body,
 }
 
 .home-title {
-  font-size: 40px;
+  font-size: 90px;
   font-weight: 800;
   color: var(--text-base);
   margin: 0;
@@ -625,7 +625,7 @@ body,
 /* src/pages/home.css */
 
 .home-hero h1 {
-  font-size: 22px;
+  font-size: 100px;
   margin-bottom: 6px;
   color: var(--text);
 }

@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import DashboardLayout from "../../components/layouts/DashboardLayout.jsx";
+import BackButton from "../../components/ui/BackButton";
 import { FaUserCircle } from "react-icons/fa";
 import { FiMail, FiUser } from "react-icons/fi";
 import { useAuth } from "../../context/AuthContext.jsx";
@@ -129,7 +130,7 @@ export default function PublicProfile() {
                   Chamar para conversar
                 </button>
               )}
-              <button className="btn" onClick={() => navigate(-1)}>Voltar</button>
+              <BackButton onClick={() => navigate(-1)} />
             </div>
           </div>
         </section>

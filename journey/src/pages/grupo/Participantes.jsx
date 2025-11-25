@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import DashboardLayout from "../../components/layouts/DashboardLayout.jsx";
 import { useAuth } from "../../context/AuthContext.jsx";
+import BackButton from "../../components/ui/BackButton";
 
 const API_URL = "http://localhost:3030/v1/journey";
 
@@ -49,10 +51,15 @@ export default function ParticipantesGrupo() {
 
   const isCreator = grupo && String(grupo.id_usuario) === String(user.id_usuario);
 
+  const navigate = useNavigate();
+
   return (
     <DashboardLayout>
       <div className="page-card">
-        <h2>Participantes do Grupo</h2>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
+          <BackButton onClick={() => navigate(-1)} />
+          <h2 style={{ margin: 0 }}>Participantes do Grupo</h2>
+        </div>
         {participantes.length === 0 && <p>Nenhum participante encontrado.</p>}
         <ul style={{ listStyle: "none", padding: 0 }}>
           {participantes.map((p) => (

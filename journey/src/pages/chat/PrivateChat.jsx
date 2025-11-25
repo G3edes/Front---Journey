@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
+import { FiSend, FiImage, FiPaperclip, FiMoreVertical } from 'react-icons/fi';
+import BackButton from '../../components/ui/BackButton';
 import { useNavigate, useParams } from "react-router-dom";
 import { io } from "socket.io-client";
 import DashboardLayout from "../../components/layouts/DashboardLayout.jsx";
@@ -175,9 +177,7 @@ export default function PrivateChat() {
         <ChatContacts />
         <section className="chat-wrapper full">
           <div className="chat-header">
-            <button className="btn-voltar" onClick={() => navigate(-1)}>
-              ← Voltar
-            </button>
+            <BackButton />
             <div>
               <h1>{contato?.nome_completo || "Conversa privada"}</h1>
               <p>Conversa privada</p>

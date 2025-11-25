@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext.jsx";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import DashboardLayout from "../../components/layouts/DashboardLayout.jsx";
+import BackButton from "../../components/ui/BackButton";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3030/v1/journey";
 
@@ -71,10 +72,13 @@ export default function EditarGrupo() {
     </DashboardLayout>
   );
 
+  const navigate = useNavigate();
+
   return (
     <DashboardLayout>
       <div className="page-card">
-        <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', gap:12, marginBottom:12}}>
+        <div style={{display:'flex', alignItems:'center', gap:'1rem', marginBottom:'1.5rem'}}>
+          <BackButton onClick={() => navigate(-1)} />
           <h2 style={{margin:0}}>Participantes do Grupo</h2>
         </div>
 

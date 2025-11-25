@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
 import DashboardLayout from "../../../components/layouts/DashboardLayout.jsx";
 import { useAuth } from "../../../context/AuthContext.jsx";
+import { FiSend, FiImage, FiPaperclip, FiSmile, FiMoreVertical } from 'react-icons/fi';
+import BackButton from '../../../components/ui/BackButton';
 import "../grupoBase.css";
 import "./chat.css";
 
@@ -190,9 +192,7 @@ export default function Chat() {
         {/* Janela do chat, agora em largura total */}
         <section className="chat-wrapper full">
           <div className="chat-header">
-            <button className="btn-voltar" onClick={() => navigate("/grupo-home")}>
-              ← Voltar
-            </button>
+            <BackButton onClick={() => navigate("/grupo-home")} />
             <div>
               <h1>{grupo?.nome || "Chat"}</h1>
               <p>{grupo?.tipo_chat === "privado" ? "Conversa privada" : "Chat do grupo"}</p>
