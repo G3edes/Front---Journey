@@ -31,6 +31,15 @@ export default function Ebook() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const [expandedDescriptions, setExpandedDescriptions] = useState({});
+
+  const toggleDescription = (id) => {
+    setExpandedDescriptions((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
   useEffect(() => {
     fetchEbooks();
   }, []);
@@ -55,14 +64,12 @@ export default function Ebook() {
     }
   };
 
-  // 🔹 Formata preço
   const formatarPreco = (valor) =>
     new Intl.NumberFormat("pt-BR", {
       style: "currency",
       currency: "BRL",
     }).format(Number(valor) || 0);
 
-  // 🔹 Barra de progresso (decorativa)
   const ProgressBar = ({ progress, label, days }) => (
     <div style={{ marginBottom: "16px" }}>
       <div
@@ -89,10 +96,8 @@ export default function Ebook() {
     </div>
   );
 
-  //  Ir para cadastro
   const handleCadastrarEbook = () => navigate("/cadastrar-ebook");
 
-  // 🔹 Ir para detalhes
   const handleAbrirEbook = (ebook) =>
     navigate(`/ebook/${ebook.id_ebooks}`, { state: ebook });
 
@@ -153,60 +158,93 @@ export default function Ebook() {
                 <p>Nenhum e-book encontrado.</p>
               ) : (
                 <CardGrid>
-                  {ebooks.map((book) => (
-                    <BookCard
-                      key={book.id_ebooks}
-                      onClick={() => handleAbrirEbook(book)}
-                      style={{
-                        cursor: "pointer",
-                        transition: "transform 0.2s ease",
-                      }}
-                      onMouseEnter={(e) =>
-                        (e.currentTarget.style.transform = "scale(1.02)")
-                      }
-                      onMouseLeave={(e) =>
-                        (e.currentTarget.style.transform = "scale(1)")
-                      }
-                    >
-                      <BookImage
-                        src={
-                          book.link_imagem ||
-                          "https://cdn-icons-png.flaticon.com/512/2232/2232688.png"
+                  {ebooks.map((book) => {
+                    const descricaoCompleta =
+                      book.descricao || "Sem descrição disponível.";
+                    const descricaoCurta =
+                      descricaoCompleta.length > 120
+                        ? descricaoCompleta.substring(0, 120) + "..."
+                        : descricaoCompleta;
+
+                    return (
+                      <BookCard
+                        key={book.id_ebooks}
+                        onClick={() => handleAbrirEbook(book)}
+                        style={{
+                          cursor: "pointer",
+                          transition: "transform 0.2s ease",
+                        }}
+                        onMouseEnter={(e) =>
+                          (e.currentTarget.style.transform = "scale(1.02)")
                         }
-                        alt={book.titulo}
-                      />
-                      <BookInfo>
-                        <h4>{book.titulo}</h4>
-                        <p>{book.descricao || "Sem descrição disponível."}</p>
+                        onMouseLeave={(e) =>
+                          (e.currentTarget.style.transform = "scale(1)")
+                        }
+                      >
+                        <BookImage
+                          src={
+                            book.link_imagem ||
+                            "https://cdn-icons-png.flaticon.com/512/2232/2232688.png"
+                          }
+                          alt={book.titulo}
+                        />
+                        <BookInfo>
+                          <h4>{book.titulo}</h4>
 
-                        <small style={{ color: "var(--text-muted)" }}>
-                          Autor: {book.usuario?.nome_completo || "Desconhecido"}
-                        </small>
+                          <p>
+                            {expandedDescriptions[book.id_ebooks]
+                              ? descricaoCompleta
+                              : descricaoCurta}
+                          </p>
 
-                        {book.categoriasEbooks?.length > 0 && (
-                          <div style={{ marginTop: "6px" }}>
-                            <small style={{ color: "var(--text-muted)" }}>
-                              Categorias:{" "}
-                              {book.categoriasEbooks
-                                .map((c) => c.categoria?.categoria)
-                                .join(", ")}
+                          {descricaoCompleta.length > 120 && (
+                            <small
+                              style={{
+                                color: "var(--primary)",
+                                cursor: "pointer",
+                                fontWeight: "600",
+                              }}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                toggleDescription(book.id_ebooks);
+                              }}
+                            >
+                              {expandedDescriptions[book.id_ebooks]
+                                ? "Ler menos"
+                                : "Ler mais"}
+                            </small>
+                          )}
+
+                          <small style={{ color: "var(--text-muted)" }}>
+                            Autor:{" "}
+                            {book.usuario?.nome_completo || "Desconhecido"}
+                          </small>
+
+                          {book.categoriasEbooks?.length > 0 && (
+                            <div style={{ marginTop: "6px" }}>
+                              <small style={{ color: "var(--text-muted)" }}>
+                                Categorias:{" "}
+                                {book.categoriasEbooks
+                                  .map((c) => c.categoria?.categoria)
+                                  .join(", ")}
+                              </small>
+                            </div>
+                          )}
+
+                          <div style={{ marginTop: "10px" }}>
+                            <small
+                              style={{
+                                color: "var(--text-color)",
+                                fontWeight: "600",
+                              }}
+                            >
+                              💰 {formatarPreco(book.preco)}
                             </small>
                           </div>
-                        )}
-
-                        <div style={{ marginTop: "10px" }}>
-                          <small
-                            style={{
-                              color: "var(--text-color)",
-                              fontWeight: "600",
-                            }}
-                          >
-                            💰 {formatarPreco(book.preco)}
-                          </small>
-                        </div>
-                      </BookInfo>
-                    </BookCard>
-                  ))}
+                        </BookInfo>
+                      </BookCard>
+                    );
+                  })}
                 </CardGrid>
               )}
             </Section>

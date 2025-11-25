@@ -49,7 +49,6 @@ const CadastrarEbook = () => {
   const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
   const [isCreating, setIsCreating] = useState(false);
 
-  // Configurações do Azure
   const AZURE_STORAGE_ACCOUNT = "journey2025";
   const AZURE_CONTAINER_NAME = "journey";
   const AZURE_SAS_TOKEN =
@@ -59,29 +58,19 @@ const CadastrarEbook = () => {
     fetchCategorias();
   }, []);
 
+  // -----------------------------------------
+  // CORREÇÃO: agora usa data.categoria
+  // -----------------------------------------
   const fetchCategorias = async () => {
     try {
-      const res = await fetch(`${BASE_URL}/ebook-categoria`);
+      const res = await fetch(`${BASE_URL}/categoria`);
       if (!res.ok) throw new Error(`Erro status ${res.status}`);
+
       const data = await res.json();
-      console.log("Resposta bruta de categorias:", data);
+      console.log("Resposta REAL das categorias:", data);
 
-      if (Array.isArray(data.ebooks_categorias)) {
-        const categoriasUnicas = [];
-        const nomes = new Set();
-
-        data.ebooks_categorias.forEach((item) => {
-          const cat = item?.categoria;
-          if (cat && !nomes.has(cat.categoria)) {
-            nomes.add(cat.categoria);
-            categoriasUnicas.push({
-              id_categoria: cat.id_categoria,
-              categoria: cat.categoria,
-            });
-          }
-        });
-
-        setCategorias(categoriasUnicas);
+      if (Array.isArray(data.categoria)) {
+        setCategorias(data.categoria);
       } else {
         throw new Error("Formato inesperado da resposta da API");
       }
@@ -110,21 +99,20 @@ const CadastrarEbook = () => {
       alert("Preencha todos os campos obrigatórios e selecione imagem e PDF.");
       return;
     }
-  
+
     if (!resolvedUserId) {
       alert("Usuário não identificado. Faça login novamente.");
       return;
     }
-  
+
     if (idCategoriasSelecionadas.length === 0) {
       alert("Selecione pelo menos uma categoria.");
       return;
     }
-  
+
     setIsCreating(true);
-  
+
     try {
-      // Upload imagem
       const imageUploadParams = {
         file: ebookImageFile,
         storageAccount: AZURE_STORAGE_ACCOUNT,
@@ -132,8 +120,7 @@ const CadastrarEbook = () => {
         containerName: AZURE_CONTAINER_NAME,
       };
       const imageUrl = await uploadImageToAzure(imageUploadParams);
-  
-      // Upload PDF
+
       const pdfUploadParams = {
         file: pdfFile,
         storageAccount: AZURE_STORAGE_ACCOUNT,
@@ -141,8 +128,7 @@ const CadastrarEbook = () => {
         containerName: AZURE_CONTAINER_NAME,
       };
       const pdfUrl = await uploadImageToAzure(pdfUploadParams);
-  
-      // 1️⃣ Cria o e-book
+
       const ebookPayload = {
         titulo,
         preco: parseFloat(preco),
@@ -151,46 +137,41 @@ const CadastrarEbook = () => {
         link_arquivo_pdf: pdfUrl,
         id_usuario: Number(resolvedUserId),
       };
-  
+
       const ebookRes = await fetch(`${BASE_URL}/ebook`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(ebookPayload),
       });
-  
+
       const ebookData = await ebookRes.json();
-  
+
       if (!ebookRes.ok) {
         console.error("Erro ao criar e-book:", ebookData);
         throw new Error(ebookData.message || `Erro ${ebookRes.status}`);
       }
-  
+
       const idEbookCriado = ebookData.id_ebooks;
-      console.log("E-book criado com ID:", idEbookCriado);
-  
-      // 2️⃣ Associa as categorias
+
       for (const idCategoria of idCategoriasSelecionadas) {
         const catPayload = {
           id_ebooks: idEbookCriado,
           id_categoria: idCategoria,
         };
-      
-        console.log("Relacionando categoria:", catPayload);
-      
+
         const catRes = await fetch(`${BASE_URL}/ebook-categoria`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(catPayload),
         });
-      
+
         const catData = await catRes.json();
         if (!catRes.ok) {
           console.error("Erro ao vincular categoria:", catData);
           throw new Error(catData.message || "Falha ao vincular categoria.");
         }
       }
-      
-  
+
       alert("E-book cadastrado com sucesso!");
       navigate("/ebook");
     } catch (error) {
@@ -200,7 +181,6 @@ const CadastrarEbook = () => {
       setIsCreating(false);
     }
   };
-  ;
 
   return (
     <div
