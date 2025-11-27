@@ -139,38 +139,49 @@ const CadastrarEbook = () => {
       };
 
       const ebookRes = await fetch(`${BASE_URL}/ebook`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(ebookPayload),
-      });
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(ebookPayload),
+});
 
-      const ebookData = await ebookRes.json();
+if (!ebookRes.ok) {
+  const errorData = await ebookRes.json();
+  throw new Error(errorData.message || "Falha ao cadastrar e-book.");
+}
 
-      const idLastBook = ebookData.ebook.id_ebooks
-      const idLastCategoria = idCategoriasSelecionadas[0]
+// -----------------------------------------
+// 1. Agora buscamos o ultimo ID do ebook
+// -----------------------------------------
+const ultimoRes = await fetch(`${BASE_URL}/ultimo/ebook/id`);
+if (!ultimoRes.ok) throw new Error("Falha ao buscar último ID do e-book.");
 
+const ultimoData = await ultimoRes.json();
+const idLastBook = ultimoData.ultimo_id;
+console.log("Último ID do e-book:", idLastBook);
 
-      
-      //aqui ta criando o bglh de associação
-      const catPayload = {
-        id_ebooks: idLastBook,
-        id_categoria: idLastCategoria,
-      };
+// -----------------------------------------
+// 2. Agora vinculamos TODAS as categorias selecionadas
+// -----------------------------------------
+for (const idCategoria of idCategoriasSelecionadas) {
+  const catPayload = {
+    id_ebooks: idLastBook,
+    id_categoria: idCategoria,
+  };
 
-      const catRes = await fetch(`${BASE_URL}/ebook-categoria`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(catPayload),
-      });
+  const catRes = await fetch(`${BASE_URL}/ebook-categoria`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(catPayload),
+  });
 
-      const catData = await catRes.json();
-      if (!catRes.ok) {
-        console.error("Erro ao vincular categoria:", catData);
-        throw new Error(catData.message || "Falha ao vincular categoria.");
-      }
-      
+  if (!catRes.ok) {
+    const catError = await catRes.json();
+    console.error("Erro ao vincular categoria:", catError);
+    throw new Error(catError.message || "Falha ao vincular categoria.");
+  }
 
-      alert("E-book cadastrado com sucesso!");
+  console.log(`Categoria ${idCategoria} vinculada ao e-book ${idLastBook}`);
+}
       navigate("/ebook");
     } catch (error) {
       console.error("Falha no cadastro do e-book:", error);

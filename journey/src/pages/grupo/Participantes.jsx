@@ -1,5 +1,3 @@
-
-
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DashboardLayout from "../../components/layouts/DashboardLayout.jsx";
@@ -32,26 +30,39 @@ export default function ParticipantesGrupo() {
   async function removerParticipante(id_usuario) {
     if (!grupo || !user) return;
     if (!window.confirm("Tem certeza que deseja remover este participante?")) return;
-
+  
     try {
-      const res = await fetch(`${API_URL}/grupo/${grupo.id_grupo}/participante/${id_usuario}`, {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id_solicitante: user.id_usuario }),
-      });
+      const res = await fetch(
+        `${API_URL}/group/${grupo.id_grupo}/leave`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            id_usuario: id_usuario
+          })
+        }
+      );
+  
+      const json = await res.json();
+  
       if (res.ok) {
         alert("Participante removido!");
         carregarParticipantes(grupo.id_grupo);
       } else {
-        const erro = await res.json();
-        alert(erro.message || "Erro ao remover participante");
+        alert(json.message || "Erro ao remover participante");
       }
+  
     } catch (e) {
+      console.error(e);
       alert("Erro ao remover participante");
     }
   }
-
-  const isCreator = grupo && String(grupo.id_usuario) === String(user.id_usuario);
+  
+  const isCreator =
+    grupo &&
+    String(grupo.id_usuario) === String(user.id_usuario);
 
   const navigate = useNavigate();
 
@@ -80,7 +91,10 @@ export default function ParticipantesGrupo() {
                 display: "flex",
                 alignItems: "center",
                 gap: 12,
-                marginBottom: 8
+                marginBottom: 12,
+                padding: "10px 12px",
+                borderRadius: 10,
+                background: "#f4f4f7"
               }}
             >
               <img
@@ -89,12 +103,14 @@ export default function ParticipantesGrupo() {
                   "https://cdn-icons-png.flaticon.com/512/149/149071.png"
                 }
                 alt={p.nome_completo}
-                width={40}
-                height={40}
+                width={45}
+                height={45}
                 style={{ borderRadius: "50%" }}
               />
 
-              <span style={{ flex: 1 }}>{p.nome_completo}</span>
+              <span style={{ flex: 1, fontWeight: 500 }}>
+                {p.nome_completo}
+              </span>
 
               {isCreator && p.id_usuario !== user.id_usuario && (
                 <button
