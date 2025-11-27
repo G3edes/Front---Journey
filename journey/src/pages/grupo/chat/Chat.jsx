@@ -3,8 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
 import DashboardLayout from "../../../components/layouts/DashboardLayout.jsx";
 import { useAuth } from "../../../context/AuthContext.jsx";
-import { FiSend, FiImage, FiPaperclip, FiSmile, FiMoreVertical } from 'react-icons/fi';
-import BackButton from '../../../components/ui/BackButton';
+import { FiSend, FiImage, FiPaperclip, FiSmile, FiMoreVertical, FiArrowLeft } from 'react-icons/fi';
 import "../grupoBase.css";
 import "./chat.css";
 
@@ -189,58 +188,116 @@ export default function Chat() {
   return (
     <DashboardLayout noPadding showRight={false}>
       <div className="chat-layout">
-        {/* Janela do chat, agora em largura total */}
-        <section className="chat-wrapper full">
+        <section className="chat-wrapper">
           <div className="chat-header">
-            <BackButton onClick={() => navigate("/grupo-home")} />
-            <div>
+            <button 
+              className="back-button" 
+              onClick={() => navigate("/grupo-home")}
+              aria-label="Voltar"
+            >
+              <FiArrowLeft size={20} />
+            </button>
+            <div className="header-content">
               <h1>{grupo?.nome || "Chat"}</h1>
-              <p>{grupo?.tipo_chat === "privado" ? "Conversa privada" : "Chat do grupo"}</p>
+              <p>
+                <span className="status-dot"></span>
+                {grupo?.tipo_chat === "privado" ? "Conversa privada" : `${grupo?.total_membros || 0} membros online`}
+              </p>
             </div>
           </div>
 
           <div className="chat-box">
-            {mensagens.length === 0 && (
-              <div className="sem-mensagens">
-                <p>Nenhuma mensagem ainda. Inicie a conversa!</p>
-              </div>
-            )}
-
-            {mensagens.map((m, i) => (
-              <div key={i} className={`mensagem ${String(m.id_usuario) === String(user.id_usuario) ? "minha" : "outro"}`}>
-                <img className="avatar" src={m.avatar || DEFAULT_AVATAR} alt={m.autor} />
-                <div className="mensagem-bubble">
-                  <div className="mensagem-topo">
-                    <strong
-                      className="autor-link"
-                      onClick={() => {
-                        const targetId = m.id_usuario;
-                        if (targetId) navigate(`/perfil/${targetId}`);
-                      }}
-                      style={{ cursor: 'pointer' }}
+            <div className="mensagens-container">
+              {mensagens.length > 0 ? (
+                mensagens.map((msg, index) => {
+                  const isCurrentUser = String(msg.id_usuario) === String(user.id_usuario);
+                  return (
+                    <div
+                      key={`${msg.id_usuario}-${index}-${msg.hora}`}
+                      className={`mensagem ${isCurrentUser ? 'minha' : 'outro'}`}
                     >
-                      {m.autor}
-                    </strong>
-                    <span className="hora">{m.hora}</span>
-                  </div>
-                  <p>{m.conteudo}</p>
+                      <img
+                        src={msg.avatar || DEFAULT_AVATAR}
+                        alt={msg.autor}
+                        className="avatar"
+                        onError={(e) => {
+                          e.target.src = DEFAULT_AVATAR;
+                        }}
+                      />
+                      <div className="mensagem-bubble">
+                        {!isCurrentUser && (
+                          <span className="sender-name">
+                            {msg.autor}
+                          </span>
+                        )}
+                        <p>{msg.conteudo}</p>
+                        <span className="message-time">
+                          {msg.hora}
+                          {isCurrentUser && (
+                            <span className="message-status">✓✓</span>
+                          )}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })
+              ) : (
+                <div className="sem-mensagens">
+                  <p>Nenhuma mensagem ainda. Seja o primeiro a enviar uma mensagem!</p>
                 </div>
-              </div>
-            ))}
-            <div ref={chatEndRef} />
+              )}
+              <div ref={chatEndRef} />
+            </div>
           </div>
 
-          <form className="chat-input" onSubmit={enviarMensagem}>
-            <input
-              type="text"
-              value={mensagem}
-              onChange={(e) => setMensagem(e.target.value)}
-              placeholder="Digite uma mensagem..."
-            />
-            <button type="submit" className="btn btn-primary">
-              Enviar
-            </button>
-          </form>
+          <div className="chat-input-container">
+            <form onSubmit={enviarMensagem} className="chat-input-wrapper">
+              <div className="chat-actions">
+                <button 
+                  type="button" 
+                  className="icon-button"
+                  data-tooltip="Anexar imagem"
+                >
+                  <FiImage />
+                </button>
+                <button 
+                  type="button" 
+                  className="icon-button"
+                  data-tooltip="Anexar arquivo"
+                >
+                  <FiPaperclip />
+                </button>
+                <button 
+                  type="button" 
+                  className="icon-button"
+                  data-tooltip="Emojis"
+                >
+                  <FiSmile />
+                </button>
+              </div>
+              <textarea
+                className="chat-input"
+                value={mensagem}
+                onChange={(e) => setMensagem(e.target.value)}
+                placeholder="Digite uma mensagem..."
+                disabled={!idChatRoom}
+                rows="1"
+                onInput={(e) => {
+                  // Ajusta a altura do textarea conforme o conteúdo
+                  e.target.style.height = 'auto';
+                  e.target.style.height = e.target.scrollHeight + 'px';
+                }}
+              />
+              <button 
+                type="submit" 
+                className="send-button"
+                disabled={!mensagem.trim() || !idChatRoom}
+                data-tooltip="Enviar mensagem"
+              >
+                <FiSend />
+              </button>
+            </form>
+          </div>
         </section>
       </div>
     </DashboardLayout>
