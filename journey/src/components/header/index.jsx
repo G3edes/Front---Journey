@@ -108,6 +108,15 @@ const Sidebar = ({ isCollapsed, setCollapsed, onItemClick }) => {
         </MenuItem>
       </Menu>
 
+      <MenuItem isCollapsed={isCollapsed} onClick={(e) => {
+          e.stopPropagation();
+          navigate("/chat");
+          onItemClick && onItemClick();
+        }}>
+          <FaComments />
+          <span>Meus E-books</span>
+        </MenuItem>
+
       <SidebarToggle
         isCollapsed={isCollapsed}
         onClick={() => setCollapsed(!isCollapsed)}
