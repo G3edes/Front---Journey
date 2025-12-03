@@ -469,6 +469,26 @@
   scrollbar-width: thin;
   scrollbar-color: var(--chat-border) transparent;
 }
+.chat-private {
+  padding: 1rem 1.5rem;
+  width: 100%;
+  background-color: var(--chat-card-bg);
+  border-top: 1px solid var(--chat-border);
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.input-private {
+  flex: 1;
+  width: 100%;
+  border: 1px solid var(--chat-border);
+  border-radius: 20px;
+  padding: 12px 16px;
+  font-size: 14px;
+  outline: none;
+}
+
 
 .chat-input::placeholder {
   color: var(--chat-text-muted);

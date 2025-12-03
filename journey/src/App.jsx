@@ -103,6 +103,16 @@ export default function App() {
             }
           />
           <Route
+            path="/perfil/publico/:id_usuario"
+            element={
+              <ProtectedRoute>
+                <SidebarProvider>
+                  <PublicProfile />
+                </SidebarProvider>
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/chat"
             element={
               <ProtectedRoute>

@@ -10,6 +10,7 @@ export default function ParticipantesGrupo() {
   const { user } = useAuth();
   const [participantes, setParticipantes] = useState([]);
   const [grupo, setGrupo] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const g = JSON.parse(localStorage.getItem("journey_grupo_atual") || "null");
@@ -36,12 +37,8 @@ export default function ParticipantesGrupo() {
         `${API_URL}/group/${grupo.id_grupo}/leave`,
         {
           method: "DELETE",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            id_usuario: id_usuario
-          })
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id_usuario })
         }
       );
   
@@ -53,7 +50,6 @@ export default function ParticipantesGrupo() {
       } else {
         alert(json.message || "Erro ao remover participante");
       }
-  
     } catch (e) {
       console.error(e);
       alert("Erro ao remover participante");
@@ -63,8 +59,6 @@ export default function ParticipantesGrupo() {
   const isCreator =
     grupo &&
     String(grupo.id_usuario) === String(user.id_usuario);
-
-  const navigate = useNavigate();
 
   return (
     <DashboardLayout>
@@ -94,7 +88,17 @@ export default function ParticipantesGrupo() {
                 marginBottom: 12,
                 padding: "10px 12px",
                 borderRadius: 10,
-                background: "#f4f4f7"
+                background: "#f4f4f7",
+                cursor: "pointer"
+              }}
+
+              // ✅ CLIQUE LEVA PARA O PERFIL PÚBLICO
+              onClick={() => {
+                if (String(p.id_usuario) === String(user.id_usuario)) {
+                  navigate("/perfil"); // se clicar em você mesmo
+                } else {
+                  navigate(`/perfil/publico/${p.id_usuario}`);
+                }
               }}
             >
               <img
@@ -115,7 +119,10 @@ export default function ParticipantesGrupo() {
               {isCreator && p.id_usuario !== user.id_usuario && (
                 <button
                   className="btn-remove"
-                  onClick={() => removerParticipante(p.id_usuario)}
+                  onClick={(e) => {
+                    e.stopPropagation(); // não abre o perfil ao remover
+                    removerParticipante(p.id_usuario);
+                  }}
                 >
                   Remover
                 </button>

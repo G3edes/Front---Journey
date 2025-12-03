@@ -219,16 +219,22 @@ export default function PrivateChat() {
             <div ref={chatEndRef} />
           </div>
 
-          <form className="chat-input" onSubmit={enviarMensagem}>
+          <form className="chat-private" onSubmit={enviarMensagem}>
             <input
               type="text"
               value={mensagem}
               onChange={(e) => setMensagem(e.target.value)}
               placeholder="Digite uma mensagem..."
+              class = "input-private"
             />
-            <button type="submit" className="btn btn-primary">
-              Enviar
+            <button
+              className="send-button"
+              disabled={!mensagem.trim()}
+              onClick={enviarMensagem}
+            >
+              <FiSend />
             </button>
+
           </form>
         </section>
       </div>
